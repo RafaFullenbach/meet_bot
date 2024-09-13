@@ -17,4 +17,7 @@ export class UsersRepository {
         return await savedUser.save();
     }
 
+    async findByEmail(email: string): Promise<UsersDTO | null> {
+        return await this.userModel.findOne({email}).exec();
+    }
 }
