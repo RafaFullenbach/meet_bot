@@ -1,13 +1,15 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Post } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from '../services/users.service';
+import { UsersDTO } from '../dto/users.dto';
+
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  async create(@Body() user) {
-    return user;
+  async create(@Body() NewUser: UsersDTO): Promise<UsersDTO> {
+    return await this.usersService.createUser(NewUser);
   }
 }
