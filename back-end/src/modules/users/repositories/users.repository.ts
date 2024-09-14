@@ -3,13 +3,13 @@ import { Injectable } from "@nestjs/common";
 import { UsersDTO } from "../dto/users.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Users } from "../interfaces/users.interface";
+import { User } from "../interfaces/user.interface";
 
 @Injectable()
 export class UsersRepository {
 
     constructor(
-        @InjectModel("users") private readonly userModel: Model<Users>
+        @InjectModel("users") private readonly userModel: Model<User>
     ) { }
 
     async createUser(newUser: UsersDTO): Promise<UsersDTO> {
@@ -17,7 +17,7 @@ export class UsersRepository {
         return await savedUser.save();
     }
 
-    async findByEmail(email: string): Promise<UsersDTO | null> {
+    async findByEmail(email: string): Promise<User | null> {
         return await this.userModel.findOne({email}).exec();
     }
 }

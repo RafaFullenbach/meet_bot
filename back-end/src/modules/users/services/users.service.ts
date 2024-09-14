@@ -12,13 +12,15 @@ export class UsersService {
   ){}
 
   async createUser(newUser: UsersDTO): Promise<UsersDTO> {
-    const checkUserExists = await this.userRepository.findByEmail(newUser.email);
+    const {email, password} = newUser;
+
+    const checkUserExists = await this.userRepository.findByEmail(email);
 
     if(checkUserExists) {
       throw new ConflictException("Este e-mail já está em uso.");
     }
 
-    const hashedPassword = await hash(newUser.password, 8);
+    const hashedPassword = await hash(password, 8);
 
     const userCreated = {
       ...newUser,
