@@ -6,7 +6,7 @@ import { MeetingsModule } from './modules/meetings/meetings.module';
 import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
-  imports: [UsersModule, MongooseModule.forRoot("mongodb://localhost/meet-bot"), MeetingsModule, AuthModule],
+  imports: [UsersModule, MongooseModule.forRoot("mongodb://mongodb:27017/meet-bot"), MeetingsModule, AuthModule],
   controllers: [],
   providers: [],
 })
