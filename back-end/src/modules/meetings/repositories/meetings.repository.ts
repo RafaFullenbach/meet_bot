@@ -22,7 +22,15 @@ export class MeetingsRepository {
             startTime: nowLocal
         });
 
-       
+
         return meetingCreated.save();
+    }
+
+    async findMeeting(organizerId): Promise<Meeting[]> {
+        return await this.userModel.find({ organizer: organizerId }).exec();
+    }
+
+    async deleteMeeting(userId: string) {
+        return await this.userModel.deleteMany({ organizer: userId }).exec();
     }
 }
