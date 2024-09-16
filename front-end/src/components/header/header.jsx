@@ -12,13 +12,43 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/hooks/auth";
+import { useEffect } from "react";
+import { useState } from "react";
+import api from "../../services/api";
 
 export default function Header() {
+  const { signOut, user } = useAuth();
+  const [meetings, setMeetings] = useState([]);
+
+  useEffect(() => {
+    async function fetchMeetings() {
+      try {
+        const response = await api.get("/meetings");
+        setMeetings(response.data);
+        console.log("meetings", response.data);
+        console.log("user", user)
+      } catch (error) {
+        console.error("Erro ao buscar reuniões", error);
+      }
+    }
+
+    if (user) {
+      fetchMeetings();
+    }
+  }, [user]);
+
+  let meetingTitle;
+
+  if(meetings.length > 0){
+    meetingTitle = meetings[0].title;
+  }
+
   return (
     <nav className="w-full p-8 border-b">
       <div className="flex flex-row items-center justify-between pr-6">
         <div className="flex flex-row items-center gap-8">
-          <h1 className="font-roboto font-bold text-4.5xl">Room Meeting</h1>
+          <h1 className="font-roboto font-bold text-4.5xl">{meetingTitle}</h1>
           <Badge
             className="px-4 py-1.5 text-2xl rounded-full inline-flex space-x-2"
             variant="secondary"
@@ -43,10 +73,10 @@ export default function Header() {
             </Avatar>
             <div className="flex flex-col">
               <span className="font-roboto font-bold text-2.5xl">
-                Rafael Carvalho Füllenbach
+                {user?.name}
               </span>
               <span className="font-roboto font-bold text-gray-400 text-lg">
-                rafael.fullenbach12@gmail.com
+              {user?.email}
               </span>
             </div>
             <DropdownMenu>
@@ -67,7 +97,7 @@ export default function Header() {
                 <DropdownMenuItem className="text-base cursor-pointer">
                   Team
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-base cursor-pointer">
+                <DropdownMenuItem onClick={signOut} className="text-base cursor-pointer">
                   Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>

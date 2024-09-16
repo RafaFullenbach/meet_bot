@@ -1,3 +1,4 @@
+import { AuthProvider } from "../hooks/auth";
 import "./globals.css";
 
 export const metadata = {
@@ -9,7 +10,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt-br">
       <body>
-        <main>{children}</main>
+        <AuthProvider>
+          <main>{children}</main>
+        </AuthProvider>
         <footer></footer>
       </body>
     </html>

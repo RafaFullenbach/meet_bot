@@ -1,3 +1,5 @@
+"use client";
+
 import MeetingControls from "@/components/meeting controls/meeting-controls";
 import LanguageSelect from "@/components/language select/language-select";
 import TranslationCard from "@/components/translation card/translation-card";
@@ -8,8 +10,26 @@ import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { GoArrowSwitch } from "react-icons/go";
 import { ImBlocked } from "react-icons/im";
+import { useAuth } from "@/hooks/auth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import api from "../../services/api";
+import { useState } from "react";
 
 export default function Meeting() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push("/signIn");
+    }
+  }, [user, router, loading]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <header className="flex">
@@ -56,8 +76,14 @@ export default function Meeting() {
                     <LanguageSelect />
                   </div>
 
-                  <TranslationCard translation="Sangat menarik" characters="14" />
-                  <TranslationCard translation="Very interesting" characters="16" />
+                  <TranslationCard
+                    translation="Sangat menarik"
+                    characters="14"
+                  />
+                  <TranslationCard
+                    translation="Very interesting"
+                    characters="16"
+                  />
                 </div>
               </Card>
 
